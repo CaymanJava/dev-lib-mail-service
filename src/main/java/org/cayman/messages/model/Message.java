@@ -1,6 +1,8 @@
 package org.cayman.messages.model;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,7 +30,11 @@ public class Message {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "ip")
+    private String ip;
+
     @Column(name = "send_date_time")
+    @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime sendDateTime;
 
     @Column(name = "new_one")

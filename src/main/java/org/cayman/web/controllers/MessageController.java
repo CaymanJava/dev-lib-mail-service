@@ -1,6 +1,7 @@
 package org.cayman.web.controllers;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.cayman.dto.MessageRequestDto;
 import org.cayman.messages.model.Message;
 import org.cayman.messages.service.MessageService;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("message")
+@Slf4j
 public class MessageController {
     private final MessageService messageService;
 
@@ -22,22 +24,24 @@ public class MessageController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Message> getAll(){
+    public List<Message> getAll() {
         return messageService.getAllMessage();
     }
 
     @RequestMapping(value = "new/count", method = RequestMethod.GET)
-    public Long getNewMessageCount(){
-        return messageService.getNewMessageCount();
+    public int getNewMessageCount() {
+        return (int) messageService.getNewMessageCount();
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean saveMessage(@RequestBody MessageRequestDto messageDto) {
+        log.info("Receive message: " + messageDto);
         return messageService.save(Message
                 .builder()
                 .userId(messageDto.getUserId())
                 .email(messageDto.getEmail())
                 .message(messageDto.getMessage())
+                .ip(messageDto.getIp())
                 .sendDateTime(LocalDateTime.now())
                 .newOne(true)
                 .build());

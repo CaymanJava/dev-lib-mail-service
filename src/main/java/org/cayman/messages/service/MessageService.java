@@ -23,7 +23,7 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
-    public Long getNewMessageCount() {
+    public long getNewMessageCount() {
         return messageRepository.countByNewOne(true);
     }
 
